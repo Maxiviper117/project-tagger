@@ -134,11 +134,12 @@ async function showMenu(basePath) {
           const { customTag } = await inquirer.prompt({
             type: "input",
             name: "customTag",
-            message: "Enter the name of the custom tag:",
+            message: "Enter the names of the custom tags, separated by commas:",
           });
 
           if (customTag) {
-            addTag(tagsPath, customTag.trim());
+            const tags = customTag.split(',').map(tag => tag.trim()).filter(tag => tag);
+            tags.forEach((tag) => addTag(tagsPath, tag));
           } else {
             console.log(chalk.red("❌ Tag name cannot be empty."));
           }
