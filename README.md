@@ -1,4 +1,4 @@
-# tagmasterjs 🚀
+# Tagmaster 🚀
 
 To install dependencies:
 
