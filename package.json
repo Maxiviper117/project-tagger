@@ -25,10 +25,10 @@
   ],
   "scripts": {
     "build": "tsc",
-    "compile": "bun build ./src/index.ts --compile --outfile ./compiled/tagmaster",
-    "compile:windows": "bun build ./src/index.ts --compile --target=bun-windows-x64 --outfile ./compiled/tagmaster.exe",
-    "compile:linux": "bun build ./src/index.ts --compile --target=bun-linux-x64 --outfile ./compiled/tagmaster",
-    "compile:mac": "bun build ./src/index.ts --compile --target=bun-darwin-x64 --outfile ./compiled/tagmaster"
+    "compile": "bun build ./src/index.ts --compile --outfile ./compiled/project-tagger",
+    "compile:windows": "bun build ./src/index.ts --compile --target=bun-windows-x64 --outfile ./compiled/project-tagger.exe",
+    "compile:linux": "bun build ./src/index.ts --compile --target=bun-linux-x64 --outfile ./compiled/project-tagger",
+    "compile:mac": "bun build ./src/index.ts --compile --target=bun-darwin-x64 --outfile ./compiled/project-tagger"
   },
   "devDependencies": {
     "@types/bun": "latest",
