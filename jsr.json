@@ -1,0 +1,6 @@
+{
+  "name": "@maxiviper117/project-tagger",
+  "version": "2024.12.07",
+  "license": "GPL-3.0-or-later",
+  "exports": "./mod.ts"
+}
