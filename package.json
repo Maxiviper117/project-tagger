@@ -1,6 +1,6 @@
 {
   "name": "project-tagger",
-  "version": "2024.12.07",
+  "version": "2024.12.08",
   "description": "A powerful CLI tool for managing tags in projects.",
   "main": "dist/index.js",
   "module": "src/index.ts",
