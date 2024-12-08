@@ -1,13 +1,20 @@
 {
-  "name": "tagmaster",
-  "version": "2024.12.07",
+  "name": "project-tagger",
+  "version": "2024.12.08",
   "description": "A powerful CLI tool for managing tags in projects.",
-  "main": "dist/tagmaster.js",
-  "module": "index.ts",
+  "main": "dist/index.js",
+  "module": "src/index.ts",
   "type": "module",
+  "files": ["dist"],  
+  "bin": {
+    "project-tagger": "dist/index.js"
+  },     
+  "publishConfig": {
+  "access": "public"
+}       ,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Maxiviper117/tagmaster.git"
+    "url": "https://github.com/Maxiviper117/project-tagger.git"
   },
   "author": "Maxiviper117",
   "license": "GPL-3.0-or-later",
@@ -18,14 +25,11 @@
     "typescript"
   ],
   "scripts": {
-    "build": "bun build ./index.ts --compile --outfile ./dist/tagmaster",
-    "build:windows": "bun build ./index.ts --compile --target=bun-windows-x64 --outfile ./dist/tagmaster.exe",
-    "build:linux": "bun build ./index.ts --compile --target=bun-linux-x64 --outfile ./dist/tagmaster",
-    "build:mac": "bun build ./index.ts --compile --target=bun-darwin-x64 --outfile ./dist/tagmaster",
-    "test": "bun test",
-    "lint": "eslint . --ext .ts",
-    "format": "prettier --write .",
-    "start": "bun run ./dist/tagmaster"
+    "build": "tsc",
+    "compile": "bun build ./src/index.ts --compile --outfile ./compiled/tagmaster",
+    "compile:windows": "bun build ./src/index.ts --compile --target=bun-windows-x64 --outfile ./compiled/tagmaster.exe",
+    "compile:linux": "bun build ./src/index.ts --compile --target=bun-linux-x64 --outfile ./compiled/tagmaster",
+    "compile:mac": "bun build ./src/index.ts --compile --target=bun-darwin-x64 --outfile ./compiled/tagmaster"
   },
   "devDependencies": {
     "@types/bun": "latest",

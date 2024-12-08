@@ -4,8 +4,8 @@ import {
   existsSync,
   unlinkSync,
   writeFileSync,
-} from "bun:fs";
-import { resolve } from "bun:path";
+} from "fs";
+import { resolve } from "path";
 import chalk from "chalk";
 import inquirer from "inquirer";
 
@@ -21,7 +21,7 @@ const DEFAULT_TAGS = [
 ];
 
 // Ensure the tags folder exists
-function getTagsFolder(basePath) {
+function getTagsFolder(basePath: string): string {
   const tagsPath = resolve(basePath, TAGS_FOLDER);
   if (!existsSync(tagsPath)) {
     mkdirSync(tagsPath, { recursive: true });
@@ -30,7 +30,7 @@ function getTagsFolder(basePath) {
 }
 
 // Add a new tag
-function addTag(tagsPath, tag) {
+function addTag(tagsPath: string, tag: string): void {
   const tagFile = resolve(tagsPath, `${tag}${TAG_EXTENSION}`);
   if (!existsSync(tagFile)) {
     writeFileSync(tagFile, "", "utf8");
@@ -41,7 +41,7 @@ function addTag(tagsPath, tag) {
 }
 
 // List all tags
-function listTags(tagsPath) {
+function listTags(tagsPath: string): void {
   try {
     const tags = readdirSync(tagsPath)
       .filter((file) => file.endsWith(TAG_EXTENSION))
@@ -54,12 +54,12 @@ function listTags(tagsPath) {
       tags.forEach((tag) => console.log(chalk.blue(`- ${tag}`)));
     }
   } catch (err) {
-    console.error(chalk.red(`❌ Error listing tags: ${err.message}`));
+    console.error(chalk.red(`❌ Error listing tags: ${(err as Error).message}`));
   }
 }
 
 // Remove a specific tag
-function removeTag(tagsPath, tag) {
+function removeTag(tagsPath: string, tag: string): void {
   const tagFile = resolve(tagsPath, `${tag}${TAG_EXTENSION}`);
   if (existsSync(tagFile)) {
     unlinkSync(tagFile);
@@ -70,7 +70,7 @@ function removeTag(tagsPath, tag) {
 }
 
 // Clear all tags
-async function clearTags(tagsPath) {
+async function clearTags(tagsPath: string): Promise<void> {
   const tagFiles = readdirSync(tagsPath).filter((file) =>
     file.endsWith(TAG_EXTENSION)
   );
@@ -95,7 +95,7 @@ async function clearTags(tagsPath) {
 }
 
 // Main Menu
-async function showMenu(basePath) {
+async function showMenu(basePath: string): Promise<void> {
   const tagsPath = getTagsFolder(basePath);
 
   while (true) {
@@ -131,15 +131,15 @@ async function showMenu(basePath) {
         });
 
         if (addMethod === "custom") {
-          const { customTag } = await inquirer.prompt({
+          const { customTag } = await inquirer.prompt<{ customTag: string }>({
             type: "input",
             name: "customTag",
             message: "Enter the names of the custom tags, separated by commas:",
           });
 
           if (customTag) {
-            const tags = customTag.split(',').map(tag => tag.trim()).filter(tag => tag);
-            tags.forEach((tag) => addTag(tagsPath, tag));
+            const tags = customTag.split(',').map((tag: string) => tag.trim()).filter(tag => tag);
+            tags.forEach((tag: string) => addTag(tagsPath, tag));
           } else {
             console.log(chalk.red("❌ Tag name cannot be empty."));
           }
@@ -151,7 +151,7 @@ async function showMenu(basePath) {
             choices: DEFAULT_TAGS,
           });
 
-          selectedTags.forEach((tag) => addTag(tagsPath, tag));
+          selectedTags.forEach((tag: string) => addTag(tagsPath, tag));
         }
         break;
 
@@ -174,7 +174,7 @@ async function showMenu(basePath) {
             choices: tags,
           });
 
-          tagsToRemove.forEach((tag) => removeTag(tagsPath, tag));
+          tagsToRemove.forEach((tag: string) => removeTag(tagsPath, tag));
         }
         break;
 
@@ -189,5 +189,5 @@ async function showMenu(basePath) {
 }
 
 // Run the CLI
-const basePath = ".";
+const basePath: string = ".";
 showMenu(basePath);
