@@ -1,4 +1,4 @@
-# Tagmaster 🚀
+# Project Tagger 🚀
 
 To install dependencies:
 
@@ -35,7 +35,7 @@ bun run index.ts
 To compile the project manually, run:
 
 ```bash
-bun build ./index.ts --compile --outfile ./dist/tagmaster
+bun build ./index.ts --compile --outfile ./dist/project-tagger
 ```
 
 Alternatively, you can use the predefined scripts in `package.json`:
