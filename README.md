@@ -28,6 +28,12 @@ A simple command-line tool for managing project tags directly.
    - **Remove a Tag:** 🗑️ Select tags to remove.
    - **Clear All Tags:** 🧹 Delete all tags at once.
 
+### Using npx project-tagger
+
+```bash
+npx project-tagger
+```
+
 ---
 
 ### Using the Source Code 🛠️
