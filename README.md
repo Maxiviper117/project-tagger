@@ -1,34 +1,54 @@
+Thanks for clarifying! Here's an updated README with a focus on using the project as a CLI tool:
+
+---
+
 # Project Tagger 🚀
 
-To install dependencies:
+A simple command-line tool for managing project tags directly.
 
-```bash
-bun install
-```
+---
 
-To run:
+## Installation & Usage 📦
 
-```bash
-bun run index.ts
-```
+### As an npm Package (CLI Tool)
 
-## How to Use 🛠️
+1. **Install Globally:**
+   ```bash
+   npm install -g project-tagger
+   ```
 
-1. **Install Dependencies:**
-    ```bash
-    bun install
-    ```
-
-2. **Run the Application:**
-    ```bash
-    bun run index.ts
-    ```
+2. **Run the Tool:**
+   ```bash
+   project-tagger
+   ```
 
 3. **Manage Tags:**
-    - **Add a Tag:** ➕ Follow the prompts to add a new tag.
-    - **List Tags:** 📃 View all existing tags.
-    - **Remove a Tag:** 🗑️ Select tags to remove.
-    - **Clear All Tags:** 🧹 Delete all tags at once.
+   - **Add a Tag:** ➕ Follow the prompts to add a new tag.
+   - **List Tags:** 📃 View all existing tags.
+   - **Remove a Tag:** 🗑️ Select tags to remove.
+   - **Clear All Tags:** 🧹 Delete all tags at once.
+
+---
+
+### Using the Source Code 🛠️
+
+1. **Install Dependencies:**
+   ```bash
+   bun install
+   ```
+
+2. **Run the Application:**
+   ```bash
+   bun run index.ts
+   ```
+
+3. **Manage Tags (CLI Interface):**
+   - **Add a Tag:** ➕ Follow the prompts to add a new tag.
+   - **List Tags:** 📃 View all existing tags.
+   - **Remove a Tag:** 🗑️ Select tags to remove.
+   - **Clear All Tags:** 🧹 Delete all tags at once.
+
+---
 
 ## Compilation
 
@@ -38,36 +58,44 @@ To compile the project manually, run:
 bun build ./index.ts --compile --outfile ./dist/project-tagger
 ```
 
-Alternatively, you can use the predefined scripts in `package.json`:
+Alternatively, use the predefined scripts in `package.json`:
 
 - **Build for Current OS:**
-    ```bash
-    bun run build
-    ```
+   ```bash
+   bun run build
+   ```
 
 - **Build for Windows:**
-    ```bash
-    bun run build:windows
-    ```
+   ```bash
+   bun run build:windows
+   ```
 
 - **Build for Linux:**
-    ```bash
-    bun run build:linux
-    ```
+   ```bash
+   bun run build:linux
+   ```
 
 - **Build for macOS:**
-    ```bash
-    bun run build:mac
-    ```
+   ```bash
+   bun run build:mac
+   ```
 
-## Script Details 📝
+---
 
-The `index.ts` script provides a command-line interface to manage project tags. It allows users to add either custom or default tags, display all existing tags, delete selected tags, and remove all tags after confirmation. The script utilizes Bun ⚡ as the JavaScript runtime to execute the script, Inquirer ❓ to handle interactive prompts for a smoother user experience, and Chalk 🎨 to add color to terminal outputs for better readability. Additionally, it manages tag files in the `tags` directory using file system operations, ensuring efficient organization and categorization within your development workflow.
+## About the Tool 📝
 
-**Technologies Used:**
+**Project Tagger** is a CLI tool designed to streamline the management of tags for your development projects. It offers an intuitive command-line interface to:
 
-- **Bun:** JavaScript runtime for running the script.
-- **Inquirer:** Handles interactive prompts.
-- **Chalk:** Adds colors to terminal outputs.
-- **File System Operations:** Manages tag files in the `tags` directory.
+- Add tags (custom or default).
+- List all existing tags.
+- Remove specific tags.
+- Clear all tags after confirmation.
 
+### Key Features:
+- **Interactive Prompts:** Seamless user interaction powered by Inquirer ❓.
+- **Color-Coded Outputs:** Enhanced readability with Chalk 🎨.
+- **Efficient File Management:** Organizes tag files in the `tags` directory.
+
+---
+
+Let me know if you'd like any further refinements!
