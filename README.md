@@ -1,38 +1,64 @@
-Thanks for clarifying! Here's an updated README with a focus on using the project as a CLI tool:
-
----
-
 # Project Tagger 🚀
 
-A simple command-line tool for managing project tags directly.
+A lightweight CLI tool that simplifies project organization through a tag-based system. Create and manage project tags to efficiently locate and categorize your projects across your filesystem.
+
+## How It Works 🔍
+
+Project Tagger creates `.project.tag` files in a `tags` directory within your project root. These tag files act as markers that can be easily searched using file system search tools.
+
+Example tag files:
+- `javascript.project.tag`
+- `local-git.project.tag`
+- `github.project.tag`
+
+### Use Case Example
+
+To find all projects pushed to GitHub:
+1. Add the `github.project.tag` to relevant projects
+2. Search for `github.project.tag` using Everything or `fzf`
+3. Instantly locate all GitHub projects, regardless of their location
 
 ---
 
-## Installation & Usage 📦
+## Installation 📦
 
-### As an npm Package (CLI Tool)
+### NPM Global Installation
+```bash
+npm install -g project-tagger
+```
 
-1. **Install Globally:**
+### Direct Usage with npx
+```bash
+npx project-tagger
+```
+
+## Usage 🚀
+
+1. Navigate to your project root:
    ```bash
-   npm install -g project-tagger
+   cd /path/to/your/project
    ```
 
-2. **Run the Tool:**
+2. Run Project Tagger:
    ```bash
    project-tagger
    ```
 
-3. **Manage Tags:**
-   - **Add a Tag:** ➕ Follow the prompts to add a new tag.
-   - **List Tags:** 📃 View all existing tags.
-   - **Remove a Tag:** 🗑️ Select tags to remove.
-   - **Clear All Tags:** 🧹 Delete all tags at once.
+### CLI Menu Options
 
-### Using npx project-tagger
+- **Add Tag** ➕
+  - Choose from predefined tags or create custom ones
+  - Tags are stored in the `/tags` directory
 
-```bash
-npx project-tagger
-```
+- **List Tags** 📃
+  - View all tags in the current project
+
+- **Remove Tag** 🗑️
+  - Select specific tags to remove
+
+- **Clear All Tags** 🧹
+  - Remove all tags from the current project
+
 
 ---
 
@@ -85,22 +111,6 @@ Alternatively, use the predefined scripts in `package.json`:
    ```bash
    bun run build:mac
    ```
-
----
-
-## About the Tool 📝
-
-**Project Tagger** is a CLI tool designed to streamline the management of tags for your development projects. It offers an intuitive command-line interface to:
-
-- Add tags (custom or default).
-- List all existing tags.
-- Remove specific tags.
-- Clear all tags after confirmation.
-
-### Key Features:
-- **Interactive Prompts:** Seamless user interaction powered by Inquirer ❓.
-- **Color-Coded Outputs:** Enhanced readability with Chalk 🎨.
-- **Efficient File Management:** Organizes tag files in the `tags` directory.
 
 ---
 
