@@ -6,25 +6,38 @@ import {
   existsSync,
   unlinkSync,
   writeFileSync,
+  readFileSync,
 } from "fs";
 import { resolve } from "path";
 import chalk from "chalk";
 import inquirer from "inquirer";
 
-const TAGS_FOLDER = "tags";
+
+const TAGS_FOLDER = ".tags";
 const TAG_EXTENSION = ".project.tag";
-const DEFAULT_TAGS = [
-  "local-git-repo",
-  "published-git-repo",
-  "python",
-  "typescript",
-  "react",
-  "nodejs",
-];
 
 // Ensure the tags folder exists
 function getTagsFolder(basePath: string): string {
   const tagsPath = resolve(basePath, TAGS_FOLDER);
+  const oldTagsPath = resolve(basePath, "tags");
+
+  // Migrate tags from 'tags' to '.tag' if 'tags' exists
+  if (existsSync(oldTagsPath)) {
+    if (!existsSync(tagsPath)) {
+      mkdirSync(tagsPath, { recursive: true });
+    }
+    readdirSync(oldTagsPath).forEach((file) => {
+      const oldFile = resolve(oldTagsPath, file);
+      const newFile = resolve(tagsPath, file);
+      // Move file
+      // Note: For simplicity, using renameSync; consider handling errors in production
+      require("fs").renameSync(oldFile, newFile);
+    });
+    // Remove the old 'tags' folder
+    require("fs").rmdirSync(oldTagsPath);
+    console.log(chalk.green(`✅ Migrated tags from 'tags' to '${TAGS_FOLDER}'.`));
+  }
+
   if (!existsSync(tagsPath)) {
     mkdirSync(tagsPath, { recursive: true });
   }
@@ -33,12 +46,14 @@ function getTagsFolder(basePath: string): string {
 
 // Add a new tag
 function addTag(tagsPath: string, tag: string): void {
-  const tagFile = resolve(tagsPath, `${tag}${TAG_EXTENSION}`);
+  const sanitizedTag = tag.replace(/\s+/g, '_'); // Replace spaces with underscores
+  console.log(chalk.gray(`🔍 Attempting to add tag: '${sanitizedTag}'`));
+  const tagFile = resolve(tagsPath, `${sanitizedTag}${TAG_EXTENSION}`);
   if (!existsSync(tagFile)) {
     writeFileSync(tagFile, "", "utf8");
-    console.log(chalk.green(`✅ Tag '${tag}' added successfully.`));
+    console.log(chalk.green(`✅ Tag '${sanitizedTag}' added successfully.`));
   } else {
-    console.log(chalk.yellow(`⚠️  Tag '${tag}' already exists.`));
+    console.log(chalk.yellow(`⚠️  Tag '${sanitizedTag}' already exists.`));
   }
 }
 
@@ -99,17 +114,19 @@ async function clearTags(tagsPath: string): Promise<void> {
 // Main Menu
 async function showMenu(basePath: string): Promise<void> {
   const tagsPath = getTagsFolder(basePath);
+  console.log(chalk.gray(`🔍 Tags directory: ${tagsPath}`)); // Added log
 
   while (true) {
     const { action } = await inquirer.prompt({
       type: "list",
       name: "action",
-      message: "Select an action:",
+      message: "Select an action:\n",
       choices: [
         { name: "✨ Add Tag", value: "add" },
         { name: "📋 List Tags", value: "list" },
         { name: "❌ Remove Tag", value: "remove" },
         { name: "🧹 Clear All Tags", value: "clear" },
+        { name: "🔍 Detect Project Type and Suggest Tags", value: "detect" }, // New option
         { name: "🚪 Exit", value: "exit" },
       ],
     });
@@ -127,7 +144,6 @@ async function showMenu(basePath: string): Promise<void> {
           message: "How would you like to add a tag?",
           choices: [
             { name: "🆕 Add a Custom Tag", value: "custom" },
-            { name: "📌 Select from Default Tags", value: "default" },
             { name: "🔙 Return to Main Menu", value: "return" },
           ],
         });
@@ -145,15 +161,6 @@ async function showMenu(basePath: string): Promise<void> {
           } else {
             console.log(chalk.red("❌ Tag name cannot be empty."));
           }
-        } else if (addMethod === "default") {
-          const { selectedTags } = await inquirer.prompt({
-            type: "checkbox",
-            name: "selectedTags",
-            message: "Select default tags to add:",
-            choices: DEFAULT_TAGS,
-          });
-
-          selectedTags.forEach((tag: string) => addTag(tagsPath, tag));
         }
         break;
 
@@ -184,9 +191,134 @@ async function showMenu(basePath: string): Promise<void> {
         await clearTags(tagsPath);
         break;
 
+      case "detect":
+        await detectAndSuggestTags(tagsPath, basePath); // Handle new action
+        break;
+
       default:
         console.log(chalk.red("❌ Invalid action selected."));
     }
+  }
+}
+
+// New function to detect project type and suggest tags
+async function detectAndSuggestTags(tagsPath: string, basePath: string): Promise<void> {
+  const suggestedTags: string[] = [];
+  const packageJsonPath = resolve(basePath, "package.json");
+
+  // Detect TypeScript projects
+  if (existsSync(resolve(basePath, "tsconfig.json"))) {
+    suggestedTags.push("typescript");
+  }
+
+  // Detect JavaScript projects
+  if (existsSync(resolve(basePath, "package.json"))) {
+    suggestedTags.push("javascript");
+  }
+
+  // Detect React projects
+  if (existsSync(resolve(basePath, "src")) && existsSync(resolve(basePath, "public"))) {
+    suggestedTags.push("react");
+  }
+
+  // Detect Python projects
+  if (existsSync(resolve(basePath, "requirements.txt")) || existsSync(resolve(basePath, "setup.py"))) {
+    suggestedTags.push("python");
+  }
+
+  // Detect Bun projects
+  if (existsSync(resolve(basePath, "bun.lockb"))) {
+    suggestedTags.push("bun");
+  }
+
+  // Detect git projects, looking for .git folder
+  if (existsSync(resolve(basePath, ".git"))) {
+    suggestedTags.push("git");
+  }
+
+  // Dete Rust projects
+  if (existsSync(resolve(basePath, "Cargo.toml"))) {
+    suggestedTags.push("rust");
+  }
+
+  // Detect Go projects
+  if (existsSync(resolve(basePath, "go.mod"))) {
+    suggestedTags.push("go");
+  }
+
+  // Detect PHP projects
+  if (existsSync(resolve(basePath, "composer.json"))) {
+    suggestedTags.push("php");
+  }
+
+  // Enhanced Laravel detection
+  if (
+    existsSync(resolve(basePath, "artisan")) &&
+    existsSync(packageJsonPath) &&
+    readFileSync(packageJsonPath, "utf-8").includes("laravel/framework")
+  ) {
+    suggestedTags.push("laravel");
+  }
+
+    // Detect Express.js projects
+  if (
+    (existsSync(resolve(basePath, "app.js")) || existsSync(resolve(basePath, "server.js"))) &&
+    existsSync(packageJsonPath) &&
+    JSON.parse(readFileSync(packageJsonPath, "utf-8")).dependencies?.express
+  ) {
+    suggestedTags.push("express");
+  }
+
+
+  // Detect Svelte projects
+  if (
+    existsSync(resolve(basePath, "svelte.config.js")) &&
+    existsSync(resolve(basePath, "src")) &&
+    readdirSync(resolve(basePath, "src")).some(file => file.endsWith(".svelte"))
+  ) {
+    suggestedTags.push("svelte");
+  }
+
+  // Detect Angular projects
+  if (
+    existsSync(resolve(basePath, "angular.json")) &&
+    existsSync(resolve(basePath, "src", "app"))
+  ) {
+    suggestedTags.push("angular");
+  }
+
+   // Detect Vue.js projects
+  if (
+    existsSync(resolve(basePath, "vue.config.js")) ||
+    existsSync(resolve(basePath, "vite.config.js")) &&
+    existsSync(resolve(basePath, "src", "components"))
+  ) {
+    suggestedTags.push("vue");
+  }
+
+  // Add more detections as needed
+
+  if (suggestedTags.length === 0) {
+    console.log(chalk.yellow("❌ No recognizable project files found for auto-suggesting tags."));
+    return;
+  }
+
+  console.log(chalk.cyan("📋 Suggested Tags based on project files:"));
+  suggestedTags.forEach((tag) => console.log(chalk.blue(`- ${tag}`)));
+
+  // Replace confirmation prompt with checkbox selection
+  const { selectedTags } = await inquirer.prompt({
+    type: "checkbox",
+    name: "selectedTags",
+    message: "Select tags to add (space to select, a to select all):",
+    choices: suggestedTags,
+    pageSize: suggestedTags.length + 2, // Adjust page size based on the number of tags
+  });
+
+  if (selectedTags.length > 0) {
+    selectedTags.forEach((tag: string) => addTag(tagsPath, tag));
+  } else {
+    console.log(chalk.yellow("⚠️  No tags selected."));
   }
 }
 
