@@ -1,22 +1,14 @@
 # Project Tagger 🚀
 
-A lightweight CLI tool that simplifies project organization through a tag-based system. Create and manage project tags to efficiently locate and categorize your projects across your filesystem.
+A lightweight CLI tool that simplifies project organization through a tag-based system. Create and manage project tags to efficiently categorize your projects.
 
 ## How It Works 🔍
 
-Project Tagger creates `.project.tag` files in a `tags` directory within your project root. These tag files act as markers that can be easily searched using file system search tools.
+**Project Tagger** creates `.project.tag` files in a hidden `.tags` directory within your project root. These `.project.tag` files act as searchable markers, making it easier to find and filter projects across your filesystem using tools like `fzf` or `Everything`.
 
-Example tag files:
-- `javascript.project.tag`
-- `local-git.project.tag`
-- `github.project.tag`
+### Example
 
-### Use Case Example
-
-To find all projects pushed to GitHub:
-1. Add the `github.project.tag` to relevant projects
-2. Search for `github.project.tag` using Everything or `fzf`
-3. Instantly locate all GitHub projects, regardless of their location
+If you add `react.project.tag` to a React project, you can later search for `react.project.tag` to quickly locate all your React projects.
 
 ---
 
@@ -32,37 +24,43 @@ npm install -g project-tagger
 npx project-tagger
 ```
 
+---
+
 ## Usage 🚀
 
-1. Navigate to your project root:
+1. **Navigate to Your Project Root:**
    ```bash
    cd /path/to/your/project
    ```
 
-2. Run Project Tagger:
+2. **Run Project Tagger:**
    ```bash
    project-tagger
    ```
 
 ### CLI Menu Options
 
-- **Add Tag** ➕
-  - Choose from predefined tags or create custom ones
-  - Tags are stored in the `/tags` directory
+- **✨ Add Tag**  
+  Add custom tags to your project. Spaces in tag names are replaced with underscores.
 
-- **List Tags** 📃
-  - View all tags in the current project
+- **📋 List Tags**  
+  View all existing tags in the `.tags` directory.
 
-- **Remove Tag** 🗑️
-  - Select specific tags to remove
+- **❌ Remove Tag**  
+  Select specific tags to remove.
 
-- **Clear All Tags** 🧹
-  - Remove all tags from the current project
+- **🧹 Clear All Tags**  
+  Remove all tags from the current project at once.
 
+- **🔍 Detect Project Type and Suggest Tags**  
+  Automatically detect common project structures (e.g., `package.json` for JavaScript, `tsconfig.json` for TypeScript, `requirements.txt` for Python) and suggest relevant tags to add.
+
+- **🚪 Exit**  
+  Quit the CLI.
 
 ---
 
-### Using the Source Code 🛠️
+## Using the Source Code 🛠️
 
 1. **Install Dependencies:**
    ```bash
@@ -75,10 +73,20 @@ npx project-tagger
    ```
 
 3. **Manage Tags (CLI Interface):**
-   - **Add a Tag:** ➕ Follow the prompts to add a new tag.
-   - **List Tags:** 📃 View all existing tags.
-   - **Remove a Tag:** 🗑️ Select tags to remove.
-   - **Clear All Tags:** 🧹 Delete all tags at once.
+   - **Add a Tag:**  
+     Follow prompts to add custom tags.
+   
+   - **List Tags:**  
+     View all tags in `.tags`.
+   
+   - **Remove a Tag:**  
+     Select tags to remove.
+   
+   - **Clear All Tags:**  
+     Remove all tags at once.
+   
+   - **Detect Project Type and Suggest Tags:**  
+     Let the CLI suggest tags based on detected project files.
 
 ---
 
@@ -90,7 +98,7 @@ To compile the project manually, run:
 bun build ./index.ts --compile --outfile ./dist/project-tagger
 ```
 
-Alternatively, use the predefined scripts in `package.json`:
+Alternatively, use the scripts defined in `package.json`:
 
 - **Build for Current OS:**
    ```bash
@@ -114,4 +122,4 @@ Alternatively, use the predefined scripts in `package.json`:
 
 ---
 
-Let me know if you'd like any further refinements!
+Feel free to open an issue if you have any questions or suggestions!

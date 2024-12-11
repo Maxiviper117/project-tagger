@@ -176,4 +176,7 @@ dist
 
 
 tags/
+tag/
+.tag/
+.tags/
 compiled/
