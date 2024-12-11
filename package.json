@@ -7,10 +7,10 @@
   "files": ["dist", "README.md", "LICENSE"],
   "bin": {
     "project-tagger": "dist/index.js"
-  },     
+  },
   "publishConfig": {
-  "access": "public"
-}       ,
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Maxiviper117/project-tagger.git"
@@ -35,7 +35,7 @@
     "@types/node": "^22.10.1",
     "eslint": "^8.56.1",
     "prettier": "^3.1.8",
-    "ts-node": "^11.1.0"
+    "ts-node": "^10.9.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
